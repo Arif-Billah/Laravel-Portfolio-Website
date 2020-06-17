@@ -30,4 +30,9 @@ Route::get('/getCourseData','CourseController@getCourseData');
 Route::post('/addNewCourses','CourseController@addNewCourses');
 Route::post('/courseDelete','CourseController@CourseDeleted');
 Route::post('/courseDetails','CourseController@CourseDetail');
+Route::post('/CourseupdatateData','CourseController@CourseupdatateData');
 
+// Admin Panel Courses manaement
+Route::get('/Project','ProjectController@ProjectIndex');
+Route::get('/getProjectData','ProjectController@getProjectData');
+Route::post('/ProjectDetails','CourseController@ProjectDetails');

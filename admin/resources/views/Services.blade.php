@@ -50,7 +50,7 @@
       
       <div class="modal-body text-center">
        <h4 class='mt-4'>Do you want to Delete?</h4>
-       <h4 class='mt-4' id="serviceDeleteID"></h4>
+       <h4 class='mt-4 d-none' id="serviceDeleteID"></h4>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No</button>
@@ -66,8 +66,8 @@
     <div class="modal-content">
        
       <div class="modal-body text-center p-5">
-       <h4 class='mt-4' id="serviceEdidID"></h4>
-	   <h5>Service Details</h5>
+       <h4 class='mt-4 d-none' id="serviceEdidID"></h4>
+	   <h5>Update Services</h5>
 	   <img class='loading-icon m-5' id="serviceEditLoader" src="{{asset('images/loader.svg')}}"/>
 	    <h4 id="serviceEditWrong" class='d-none'>something went wrong</h4>
 		<div id="serviceEditForm" class='w-100 d-none'>
@@ -114,7 +114,8 @@
 @endsection
 @section('script')
 	<script type='text/javaScript'>
-
+		$('#servicetableid').DataTable();
+		$('.dataTables_length').addClass('bs-select');
 		setServiceData()
 		//for services table
 function setServiceData() {
@@ -124,6 +125,7 @@ function setServiceData() {
 			{
                 $('#mainDiv').removeClass('d-none');
                 $('#loaderDiv').addClass('d-none');
+				$('#servicetableid').DataTable().destroy();
                 $('#service_table').empty();
                 var jsonData = response.data;
                 $.each(jsonData, function(i, item){
@@ -153,6 +155,8 @@ function setServiceData() {
 				    ServiceUpdateDetails(id);
 					$("#addModal").modal('show');
 				});
+				$('#servicetableid').DataTable();
+		        $('.dataTables_length').addClass('bs-select');
             } else {
                 //$('#loaderDiv').addClass('d-none');
                 //$('#worngDiv').removeClass('d-none');

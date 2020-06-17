@@ -10,7 +10,7 @@ class ServiceController extends Controller{
 	  return view('Services');
   } 
   function getServicesData(){
-	  $result=json_encode(ServiceModel::all());
+	  $result=json_encode(ServiceModel::orderBy('id','desc')->get());
 	  return $result;
   }
   
