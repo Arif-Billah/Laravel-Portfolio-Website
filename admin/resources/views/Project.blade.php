@@ -1,6 +1,6 @@
 @extends('Layout.app')
 @section('content')
-<button id="AddNewDataId" class="btn btn-sm btn-danger my-3">Add New</button>
+<button id="AddNewProjectId" class="btn btn-sm btn-danger my-3">Add New</button>
 
 <div class="container d-none" id='mainDiv'>
 <div class="row">
@@ -81,13 +81,13 @@
 	 
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No</button>
-        <button id='ProjectAddConfirmBtn' type="button" class="btn btn-sm btn-danger">Save</button>
+        <button id='ProjectEditConfirmBtn' type="button" class="btn btn-sm btn-danger">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="addNewProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -96,9 +96,10 @@
        <h6 class='mb-4' id="">Add New Project</h6>
 	    
 		<div id="ProjectAddForm" class='w-100'>
-	   <input type="text" id="serviceNameId" class="form-control mb-4" placeholder="Service Name">
-       <input type="text" id="serviceDesId" class="form-control mb-4" placeholder="Service Description">
-       <input type="text" id="serviceImgId" class="form-control mb-4" placeholder="Service Image">
+		   <input type="text" id="projectNewNameID" class="form-control mb-4" placeholder="Project Name">
+		   <input type="text" id="projectNewDesID" class="form-control mb-4" placeholder="Project Description">
+		   <input type="text" id="projectNewLinkID" class="form-control mb-4" placeholder="Project Link">
+		   <input type="text" id="projectNewImgID" class="form-control mb-4" placeholder="Project Image">
 	   </div>
       </div>
 	 
@@ -116,7 +117,7 @@
 @section('script')
 	<script type='text/javaScript'>
 		
-		//setProjectData()
+		SetProjectData()
 
 	</script>
 @endsection

@@ -155,7 +155,7 @@ function setServiceData() {
 				    ServiceUpdateDetails(id);
 					$("#addModal").modal('show');
 				});
-				$('#servicetableid').DataTable();
+				$('#servicetableid').DataTable({'order':false});
 		        $('.dataTables_length').addClass('bs-select');
             } else {
                 //$('#loaderDiv').addClass('d-none');

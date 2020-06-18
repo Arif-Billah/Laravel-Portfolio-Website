@@ -1,5 +1,5 @@
-		//for services table
-function setProjectData() {
+		//for project table
+function SetProjectData() {
     axios.get('/getProjectData')
         .then(function(response) {
             if (response.status == 200) 
@@ -11,23 +11,23 @@ function setProjectData() {
                 var jsonData = response.data;
                 $.each(jsonData, function(i, item){
                     $('<tr>').html(
-                        "<td><img class='table-img' src=" + jsonData[i].project_name+ "></td>" +
+                        "<td>" + jsonData[i].project_name+ "</td>" +
                         "<td>" + jsonData[i].project_des + "</td>" +
-                        "<td><a class='ProjectAdditBtn' data-id="+ jsonData[i].id +"><i class='fas fa-edit'></i></a></td>" +
+                        "<td><a class='ProjectEdititBtn' data-id="+ jsonData[i].id +"><i class='fas fa-edit'></i></a></td>" +
                         "<td><a class='ProjectDeleteBtn' data-id=" + jsonData[i].id +"><i class='fas fa-trash-alt'></i></a></td>"
 
                     ).appendTo('#project_table');
                 });
                 
-				//Services table Delete Icon click
+				//projects table Delete Icon click
 				$('.ProjectDeleteBtn').click(function() {
                     var id = $(this).data('id');
                     $('#ProjectDeleteID').html(id);
 					
                     $("#deleteProjectModal").modal('show');
                 });
-				//Services table edit Icon click
-				$('.ProjectAdditBtn').click(function(){
+				//projects table edit Icon click
+				$('.ProjectEdititBtn').click(function(){
 					var id=$(this).data('id');
 					$('#ProjectEdidID').html(id);
 					var id = $('#ProjectEdidID').html();
@@ -35,7 +35,7 @@ function setProjectData() {
 				    ProjectUpdateDetails(id);
 					$("#EditProjectModal").modal('show');
 				});
-				$('#Projecttableid').DataTable();
+				$('#Projecttableid').DataTable({"order":false});
 		        $('.dataTables_length').addClass('bs-select');
             } else {
                 //$('#loaderDiv').addClass('d-none');
@@ -48,66 +48,69 @@ function setProjectData() {
         });
 }
 
-//service AddNew Btn Click
-$('#AddNewDataId').click(function(){
-	$('#addNewModal').modal('show');
+//project AddNew Btn Click
+$('#AddNewProjectId').click(function(){
+	$('#addNewProjectModal').modal('show');
 });
 
-   //services delete Model yes BTN
-$('#serviceDeleteConfirmBtn').click(function() {
-                    var id = $('#serviceDeleteID').html();
+   //projects delete Model yes BTN
+$('#ProjectDeleteConfirmBtn').click(function() {
+                    var id = $('#ProjectDeleteID').html();
                     //alert(id);
-                    ServiceDelete(id);
+                    ProjectDelete(id);
                 });
-	//service addModal save btn
- $('#serviceAddConfirmBtn').click(function() {
-				var id = $('#serviceEdidID').html();
-				var name = $('#serviceNameID').val();
-				var description = $('#serviceDesID').val();
-				var img = $('#serviceImgID').val();
+	//project EditModal save btn
+ $('#ProjectEditConfirmBtn').click(function() {
+			 var id    = $('#ProjectEdidID').html();
+	         var name  = $('#projectNameID').val();
+			 var des   = $('#projectDesID').val();
+			 var Link  = $('#projectLinkID').val();
+			 var img   = $('#projectImgID').val();
 				//alert(name);
-				ServiceUpdate(id,name,description,img);
+				ProjectUpdate(id,name,des,Link,img);
 			});
-	//new service Add btn save
-$('#serviceNewAddConfirmBtn').click(function(){
-				var name = $('#serviceNameId').val();
-				var description = $('#serviceDesId').val();
-				var img = $('#serviceImgId').val();
+	//new project Add btn save  
+$('#ProjectNewAddConfirmBtn').click(function(){
+				var name = $('#projectNewNameID').val();
+				//alert(name);
+				var description = $('#projectNewDesID').val();
+				var Link = $('#projectNewLinkID').val();
+				var img = $('#projectNewImgID').val();
 				//alert(description);
 				//alert(img);
 				
-				addNewService(name,description,img);
+				addNewProject(name,description,Link,img);
 });			
-//Service Delete
-function ServiceDelete(deleteID) {
+//project Delete
+function ProjectDelete(deleteID) {
     //alert(deleteID);
-	$('#serviceDeleteConfirmBtn').html("<div class='spinner-border spinner-border-sm' role='status'></div>");
-    axios.post('/ServiceDelete', {
+	$('#ProjectDeleteConfirmBtn').html("<div class='spinner-border spinner-border-sm' role='status'></div>");
+    axios.post('/ProjectDelete', {
             id: deleteID
         })
         .then(function(response) {
-			$('#serviceDeleteConfirmBtn').html('Yes');
+			$('#ProjectDeleteConfirmBtn').html('Yes');
             if (response.data == 1) {
                 //alert('success'); 
-                $('#deleteModal').modal('hide');
+                $('#deleteProjectModal').modal('hide');
                 toastr.success('successfully Deleted')
-                setServiceData();
+                SetProjectData()
             } else {
 				 toastr.error('Delete Fail')
-                $('#deleteModal').modal('hide');
-                setServiceData();
+                $('#deleteProjectModal').modal('hide');
+                 SetProjectData();
             }
 
 
         })
         .catch(function(error){
 			toastr.error('Delete Fail')
-			$('#deleteModal').modal('hide');
-			setServiceData();
+                $('#deleteProjectModal').modal('hide');
+                 SetProjectData();
         });
 
 }
-//service Details
+//project Details
 function ProjectUpdateDetails(DetailsId){
 	//alert(updateId)
 	
@@ -135,80 +138,89 @@ function ProjectUpdateDetails(DetailsId){
 	$('#ProjectEditWrong').removeClass('d-none'); 
 	});
 }
-//service Update
-function ServiceUpdate(updateID,name,description,img){
-	$('#serviceAddConfirmBtn').html("<div class='spinner-border spinner-border-sm' role='status'></div>");
+//project Update
+function ProjectUpdate(updateID,name,description,Link,img){
+	$('#ProjectEditConfirmBtn').html("<div class='spinner-border spinner-border-sm' role='status'></div>");
 	if(name.length==0){
-		toastr.error('Service Name is Empty')
+		toastr.error('Project Name is Empty')
 	}
 	else if(description.length==0){
-		toastr.error('Service Description is Empty')
+		toastr.error('Project Description is Empty')
+	}
+	else if(description.Link==0){
+		toastr.error('Project link is Empty')
 	}
 	else if(img.length==0){
-		toastr.error('Service image is Empty')
+		toastr.error('Project image is Empty')
 	}
 	else{
-		axios.post('/updatateData',{
+		axios.post('/ProjectUpdate',{
 	    id: updateID,
 		name: name,
 		des: description,
+		Link: Link,
 		img: img, 
 	})
 	
 	.then(function(response){
-		$('#serviceAddConfirmBtn').html('save');
+		$('#ProjectEditConfirmBtn').html('save');
 		   if (response.data == 1){
-			$("#addModal").modal('hide');
+			$("#EditProjectModal").modal('hide');
                 toastr.success('successfully Updated')
-                setServiceData();
+               SetProjectData()
 		 }else{
 			 toastr.error('Update Fail')
-                $('#addModal').modal('hide');
-                setServiceData();
+                $('#EditProjectModal').modal('hide');
+               SetProjectData()
 				} 
 	})
 	.catch(function(error){
 		 toastr.error('Update Fail')
-                $('#addModal').modal('hide');
-                setServiceData();
+                $('#EditProjectModal').modal('hide');
+                SetProjectData()
 	})
 	}
 	
 	
 }
-function addNewService(serviceName,serviceDes,serviceImg){
-	$('#serviceNewAddConfirmBtn').html("<div class='spinner-border spinner-border-sm' role='status'></div>");
-	if(serviceName.length==0){
-		toastr.error('Service Name is Empty')
+function addNewProject(ProjectName,ProjectDes,ProjectLink,ProjectImg){
+	$('#ProjectNewAddConfirmBtn').html("<div class='spinner-border spinner-border-sm' role='status'></div>");
+	if(ProjectName.length==0){
+		toastr.error('Project Name is Empty')
 	}
-	else if(serviceDes.length==0){
-		toastr.error('Service Description is Empty')
+	else if(ProjectDes.length==0){
+		toastr.error('Project Description is Empty')
 	}
-	else if(serviceImg.length==0){
-		toastr.error('Service image is Empty')
+	else if(ProjectLink.length==0){
+		toastr.error('Project link is Empty')
+	}
+	else if(ProjectImg.length==0){
+		toastr.error('Project image is Empty')
 	}
 	else{
-	axios.post('/addNewServices',{
-		name:serviceName,
-		des:serviceDes,
-		img:serviceImg,
+	axios.post('/addNewProject',{
+		name:ProjectName,
+		des:ProjectDes,
+		Link:ProjectLink,
+		img:ProjectImg
 	})
 	.then(function(response){
-		$('#serviceNewAddConfirmBtn').html('save');
+		$('#ProjectNewAddConfirmBtn').html('save');
+		alert(response.data);
 		 if (response.data == 1){
-			$("#addNewModal").modal('hide');
+			$("#addNewProjectModal").modal('hide');
                 toastr.success('successfully Added')
-                setServiceData();
+                SetProjectData()
 		 }else{
 			 toastr.error('Fail to Add')
-                $('#addNewModal').modal('hide');
-                setServiceData();
+                $('#addNewProjectModal').modal('hide');
+                SetProjectData()
 		 }
 	})
 	.catch(function(error){
 		toastr.error('Fail to Add')
-                $('#addNewModal').modal('hide');
-                setServiceData();
+                $('#addNewProjectModal').modal('hide');
+                SetProjectData()
 	})
 	}	
 	
